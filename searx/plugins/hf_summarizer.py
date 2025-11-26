@@ -18,6 +18,10 @@ if typing.TYPE_CHECKING:
     from searx.extended_types import SXNG_Request
     from searx.plugins import PluginCfg
 
+# Constants for text length validation
+MIN_TEXT_LENGTH = 50
+MAX_TEXT_LENGTH = 10000
+
 
 class SXNGPlugin(Plugin):
     """Plugin that provides text summarization using Hugging Face's Inference API.
@@ -38,8 +42,10 @@ class SXNGPlugin(Plugin):
             preference_section="general",
         )
 
-        # Get the HF token from environment variable
+        # Get the HF token from environment variable and validate
         self.hf_token = os.environ.get("HF_TOKEN", "")
+        if self.hf_token and not self.hf_token.startswith("hf_"):
+            self.log.warning("HF_TOKEN does not start with 'hf_' prefix - may be invalid")
         self.model = "sshleifer/distilbart-cnn-12-6"
 
     def _summarize_text(self, text: str) -> str | None:
@@ -52,7 +58,6 @@ class SXNGPlugin(Plugin):
             from huggingface_hub import InferenceClient
 
             client = InferenceClient(
-                provider="hf-inference",
                 api_key=self.hf_token,
             )
 
@@ -91,17 +96,18 @@ class SXNGPlugin(Plugin):
         # Extract the text to summarize
         text_to_summarize = query[10:].strip()  # Remove "summarize:" prefix
 
-        if len(text_to_summarize) < 50:
+        if len(text_to_summarize) < MIN_TEXT_LENGTH:
             results.add(
                 results.types.Answer(
-                    answer=gettext("Please provide more text to summarize (at least 50 characters).")
+                    answer=gettext("Please provide more text to summarize (at least %(min)d characters).")
+                    % {"min": MIN_TEXT_LENGTH}
                 )
             )
             return results
 
         # Limit text length to avoid API issues
-        if len(text_to_summarize) > 10000:
-            text_to_summarize = text_to_summarize[:10000]
+        if len(text_to_summarize) > MAX_TEXT_LENGTH:
+            text_to_summarize = text_to_summarize[:MAX_TEXT_LENGTH]
 
         summary = self._summarize_text(text_to_summarize)
 
