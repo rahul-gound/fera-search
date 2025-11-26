@@ -1,18 +1,24 @@
-# Fera Search
+# Fera Search 🔍
 
-Fera Search is a privacy-respecting metasearch engine based on [SearXNG](https://github.com/searxng/searxng).
+<p align="center">
+  <img src="client/simple/src/brand/searxng.svg" alt="Fera Search Logo" width="120">
+</p>
+
+**Fera Search** is a privacy-respecting metasearch engine based on [SearXNG](https://github.com/searxng/searxng), featuring an orange-themed professional design and AI-powered summarization.
 
 ## About
 
-This project is a fork of SearXNG, a free internet metasearch engine that aggregates results from various search services and databases. Users are neither tracked nor profiled.
+This project is a customized fork of SearXNG, a free internet metasearch engine that aggregates results from various search services and databases. Users are neither tracked nor profiled.
 
 ## Features
 
-- Privacy-respecting metasearch engine
-- No tracking or profiling of users
-- Aggregates results from multiple search engines
-- Self-hostable
-- Highly configurable
+- 🔒 **Privacy-respecting** metasearch engine
+- 🚫 **No tracking** or profiling of users
+- 🔍 **Aggregates results** from multiple search engines
+- 🏠 **Self-hostable**
+- ⚙️ **Highly configurable**
+- 🎨 **Professional orange theme**
+- 🤖 **AI-powered summarization** using Hugging Face
 
 ## Quick Start
 
@@ -34,10 +40,36 @@ This project is a fork of SearXNG, a free internet metasearch engine that aggreg
    pip install -r requirements.txt
    ```
 
-3. Run the development server:
+3. Set up Hugging Face API token (for AI summarization):
+   ```bash
+   export HF_TOKEN="your_huggingface_token_here"
+   ```
+
+4. Run the development server:
    ```bash
    python -m searx.webapp
    ```
+
+### Using AI Summarization
+
+To use the AI summarization feature, prefix your query with `summarize:`:
+```
+summarize: The tower is 324 metres (1,063 ft) tall, about the same height as an 81-storey building...
+```
+
+### Deployment with Caddy (for fera-search.tech)
+
+Create a `Caddyfile`:
+```
+fera-search.tech {
+    reverse_proxy localhost:8888
+}
+```
+
+Run Caddy:
+```bash
+caddy run
+```
 
 ### Using Make
 
@@ -55,6 +87,14 @@ make run
 
 Configuration files are located in the `searx/settings.yml` file. See the [SearXNG Configuration Guide](https://docs.searxng.org/admin/settings/index.html) for detailed configuration options.
 
+### Environment Variables
+
+| Variable | Description |
+|----------|-------------|
+| `HF_TOKEN` | Hugging Face API token for AI summarization |
+| `SEARXNG_SECRET` | Secret key for the instance |
+| `SEARXNG_BASE_URL` | Public URL of the instance |
+
 ## Documentation
 
 For comprehensive documentation, refer to the [SearXNG Documentation](https://docs.searxng.org/).
@@ -70,4 +110,5 @@ This project is licensed under the GNU Affero General Public License (AGPL-3.0).
 ## Acknowledgments
 
 - [SearXNG](https://github.com/searxng/searxng) - The original project this fork is based on
+- [Hugging Face](https://huggingface.co/) - AI model hosting and inference
 - All the contributors to SearXNG
