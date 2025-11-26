@@ -895,7 +895,7 @@ searxng.doc.rst() {
     if [[ ${SEARXNG_UWSGI_USE_SOCKET} == true ]]; then
         uwsgi_variant=':socket'
     else
-        uwsgi_variant=':socket'
+        uwsgi_variant=''
     fi
 
     eval "echo \"$(<"${REPO_ROOT}/docs/build-templates/searxng.rst")\""
