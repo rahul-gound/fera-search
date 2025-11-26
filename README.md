@@ -59,7 +59,7 @@ summarize: The tower is 324 metres (1,063 ft) tall, about the same height as an 
 
 ### Deployment with Caddy (for fera-search.tech)
 
-Create a `Caddyfile`:
+Create a `Caddyfile` (default port is 8888, configurable in `searx/settings.yml`):
 ```
 fera-search.tech {
     reverse_proxy localhost:8888
