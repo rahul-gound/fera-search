@@ -17,6 +17,7 @@ dist/
 local/
 gh-pages/
 *.egg-info/
+.pytest_cache/
 
 /package-lock.json
 /node_modules/
