@@ -40,12 +40,7 @@ This project is a customized fork of SearXNG, a free internet metasearch engine 
    pip install -r requirements.txt
    ```
 
-3. Set up Hugging Face API token (for AI summarization):
-   ```bash
-   export HF_TOKEN="your_huggingface_token_here"
-   ```
-
-4. Run the development server:
+3. Run the development server:
    ```bash
    python -m searx.webapp
    ```
@@ -57,120 +52,92 @@ To use the AI summarization feature, prefix your query with `summarize:`:
 summarize: The tower is 324 metres (1,063 ft) tall, about the same height as an 81-storey building...
 ```
 
-## Deploying on DigitalOcean
+The Hugging Face token is already configured in the code.
 
-### Option 1: DigitalOcean Droplet (Recommended)
+## Deploying on Appwrite
 
-1. **Create a Droplet:**
-   - Go to [DigitalOcean](https://cloud.digitalocean.com/)
-   - Create a new Droplet with Ubuntu 22.04 LTS
-   - Choose at least 1GB RAM / 1 CPU ($6/month)
-   - Add your SSH key for access
+### Option 1: Appwrite Functions
 
-2. **Connect to your Droplet:**
+1. **Create an Appwrite account:**
+   - Go to [Appwrite Cloud](https://cloud.appwrite.io/) or self-host Appwrite
+   - Create a new project
+
+2. **Install Appwrite CLI:**
    ```bash
-   ssh root@your_droplet_ip
+   npm install -g appwrite-cli
+   appwrite login
    ```
 
-3. **Install dependencies:**
+3. **Initialize Appwrite Function:**
    ```bash
-   apt update && apt upgrade -y
-   apt install -y python3 python3-pip python3-venv git
+   appwrite init function
    ```
 
-4. **Clone and setup Fera Search:**
-   ```bash
-   cd /opt
-   git clone https://github.com/rahul-gound/fera-search.git
-   cd fera-search
-   python3 -m venv venv
-   source venv/bin/activate
-   pip install -r requirements.txt
-   ```
-
-5. **Configure environment variables:**
-   ```bash
-   export HF_TOKEN="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"
-   export SEARXNG_SECRET=$(openssl rand -hex 32)
-   export SEARXNG_BASE_URL="https://fera-search.tech"
-   ```
-
-6. **Install and configure Caddy for SSL:**
-   ```bash
-   apt install -y debian-keyring debian-archive-keyring apt-transport-https curl
-   curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | gpg --dearmor -o /usr/share/keyrings/caddy-stable-archive-keyring.gpg
-   curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' | tee /etc/apt/sources.list.d/caddy-stable.list
-   apt update
-   apt install caddy
-   ```
-
-7. **Create Caddyfile:**
-   ```bash
-   cat > /etc/caddy/Caddyfile << 'EOF'
-   fera-search.tech {
-       reverse_proxy localhost:8888
+4. **Create `appwrite.json` in project root:**
+   ```json
+   {
+     "projectId": "your-project-id",
+     "functions": [
+       {
+         "name": "fera-search",
+         "runtime": "python-3.9",
+         "execute": ["any"],
+         "entrypoint": "searx/webapp.py",
+         "commands": "pip install -r requirements.txt"
+       }
+     ]
    }
-   EOF
    ```
 
-8. **Point your domain to DigitalOcean:**
-   - In your domain registrar, set the A record for `fera-search.tech` to your Droplet's IP address
-
-9. **Create a systemd service for Fera Search:**
+5. **Deploy to Appwrite:**
    ```bash
-   cat > /etc/systemd/system/fera-search.service << 'EOF'
-   [Unit]
-   Description=Fera Search
-   After=network.target
-
-   [Service]
-   Type=simple
-   User=root
-   WorkingDirectory=/opt/fera-search
-   Environment="HF_TOKEN=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"
-   Environment="SEARXNG_SECRET=your_secret_key_here"
-   Environment="SEARXNG_BASE_URL=https://fera-search.tech"
-   ExecStart=/opt/fera-search/venv/bin/python -m searx.webapp
-   Restart=always
-
-   [Install]
-   WantedBy=multi-user.target
-   EOF
+   appwrite deploy function
    ```
 
-10. **Start services:**
-    ```bash
-    systemctl daemon-reload
-    systemctl enable fera-search
-    systemctl start fera-search
-    systemctl restart caddy
-    ```
+### Option 2: Appwrite with Docker
 
-11. **Verify it's running:**
-    ```bash
-    systemctl status fera-search
-    curl http://localhost:8888
-    ```
+1. **Create a `Dockerfile`:**
+   ```dockerfile
+   FROM python:3.9-slim
+   
+   WORKDIR /app
+   COPY . .
+   RUN pip install -r requirements.txt
+   
+   EXPOSE 8888
+   CMD ["python", "-m", "searx.webapp"]
+   ```
 
-Your Fera Search instance should now be live at `https://fera-search.tech`!
+2. **Build and push to registry:**
+   ```bash
+   docker build -t fera-search:latest .
+   docker tag fera-search:latest your-registry/fera-search:latest
+   docker push your-registry/fera-search:latest
+   ```
 
-### Option 2: DigitalOcean App Platform
+3. **Deploy on Appwrite Cloud or self-hosted Appwrite with Docker**
 
-1. Go to [DigitalOcean App Platform](https://cloud.digitalocean.com/apps)
-2. Click "Create App"
-3. Connect your GitHub repository (`rahul-gound/fera-search`)
-4. Configure:
-   - **Run Command:** `python -m searx.webapp`
-   - **HTTP Port:** 8888
-   - **Environment Variables:**
-     - `HF_TOKEN` = `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`
-     - `SEARXNG_SECRET` = (generate a random string)
-     - `SEARXNG_BASE_URL` = `https://your-app-name.ondigitalocean.app`
-5. Deploy!
+### Option 3: Deploy with Docker Compose (Self-hosted)
 
-### Deployment with Caddy (Local/VPS)
+1. **Create `docker-compose.yml`:**
+   ```yaml
+   version: '3.8'
+   services:
+     fera-search:
+       build: .
+       ports:
+         - "8888:8888"
+       restart: always
+   ```
 
-Create a `Caddyfile` (default port is 8888, configurable in `searx/settings.yml`):
+2. **Run:**
+   ```bash
+   docker-compose up -d
+   ```
+
+### Deployment with Caddy (for SSL on fera-search.tech)
+
+Create a `Caddyfile`:
 ```
 fera-search.tech {
     reverse_proxy localhost:8888
@@ -202,7 +169,6 @@ Configuration files are located in the `searx/settings.yml` file. See the [SearX
 
 | Variable | Description |
 |----------|-------------|
-| `HF_TOKEN` | Hugging Face API token for AI summarization |
 | `SEARXNG_SECRET` | Secret key for the instance |
 | `SEARXNG_BASE_URL` | Public URL of the instance |
 

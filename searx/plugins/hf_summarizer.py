@@ -2,7 +2,6 @@
 """Hugging Face summarization plugin for Fera Search.
 
 This plugin provides AI-powered text summarization using Hugging Face's Inference API.
-Configure the HF_TOKEN environment variable to enable this feature.
 """
 
 import os
@@ -22,12 +21,14 @@ if typing.TYPE_CHECKING:
 MIN_TEXT_LENGTH = 50
 MAX_TEXT_LENGTH = 10000
 
+# Hugging Face API token
+HF_TOKEN = "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"
+
 
 class SXNGPlugin(Plugin):
     """Plugin that provides text summarization using Hugging Face's Inference API.
 
     The summarization is triggered by using the prefix "summarize:" in the search query.
-    Requires the HF_TOKEN environment variable to be set with a valid Hugging Face API token.
     """
 
     id = "hf_summarizer"
@@ -42,16 +43,14 @@ class SXNGPlugin(Plugin):
             preference_section="general",
         )
 
-        # Get the HF token from environment variable and validate
-        self.hf_token = os.environ.get("HF_TOKEN", "")
-        if self.hf_token and not self.hf_token.startswith("hf_"):
-            self.log.warning("HF_TOKEN does not start with 'hf_' prefix - may be invalid")
+        # Use the configured HF token
+        self.hf_token = HF_TOKEN
         self.model = "sshleifer/distilbart-cnn-12-6"
 
     def _summarize_text(self, text: str) -> str | None:
         """Summarize text using Hugging Face Inference API."""
         if not self.hf_token:
-            self.log.warning("HF_TOKEN environment variable not set")
+            self.log.warning("HF_TOKEN not configured")
             return None
 
         try:
@@ -120,7 +119,7 @@ class SXNGPlugin(Plugin):
         else:
             results.add(
                 results.types.Answer(
-                    answer=gettext("Unable to generate summary. Please check if HF_TOKEN is configured.")
+                    answer=gettext("Unable to generate summary. Please try again later.")
                 )
             )
 
