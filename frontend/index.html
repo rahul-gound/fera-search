@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>fera-summarizeAI</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <h1>fera-summarizeAI</h1>
+                <p class="tagline">Intelligent Text Summarization & Search</p>
+            </div>
+        </header>
+
+        <main>
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="summarize">Summarize</button>
+                <button class="tab-btn" data-tab="search">Search & Answer</button>
+            </div>
+
+            <div id="summarize" class="tab-content active">
+                <h2>Text Summarization</h2>
+                <p class="description">Paste your text below to get an AI-powered summary</p>
+                <textarea id="summarize-input" placeholder="Enter your text here (minimum 250 characters)..." rows="10"></textarea>
+                <button id="summarize-btn" class="primary-btn">Summarize</button>
+                <div id="summarize-result" class="result-box hidden">
+                    <h3>Summary</h3>
+                    <p id="summary-text"></p>
+                </div>
+            </div>
+
+            <div id="search" class="tab-content">
+                <h2>Search & Answer</h2>
+                <p class="description">Provide content and ask a question about it</p>
+                <textarea id="content-input" placeholder="Enter your content here..." rows="8"></textarea>
+                <input type="text" id="query-input" placeholder="Ask a question about the content...">
+                <button id="search-btn" class="primary-btn">Get Answer</button>
+                <div id="search-result" class="result-box hidden">
+                    <h3>Answer</h3>
+                    <p id="answer-text"></p>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>Powered by <strong>fera-summarizeAI</strong></p>
+        </footer>
+    </div>
+
+    <div id="loading" class="loading hidden">
+        <div class="spinner"></div>
+        <p>Processing...</p>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
