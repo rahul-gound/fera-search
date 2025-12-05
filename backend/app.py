@@ -38,13 +38,22 @@ def search():
         
         data = request.get_json()
         query = data.get('query', '')
+        safe_mode = data.get('safeMode', 'on')  # 'off', 'on', 'strict'
         
         if not query:
             return jsonify({'error': 'No search query provided'}), 400
         
+        # Build safe mode instruction
+        safe_mode_instruction = ""
+        if safe_mode == 'strict':
+            safe_mode_instruction = "IMPORTANT: This is a strict safe mode search. Do not include any adult, violent, harmful, or inappropriate content. Keep the response family-friendly and suitable for all ages."
+        elif safe_mode == 'on':
+            safe_mode_instruction = "Note: Safe mode is enabled. Avoid explicit or harmful content in your response."
+        
         # Use Gemini to generate a comprehensive search response
         prompt = f"""You are a helpful search assistant. Provide a comprehensive, well-structured answer to this search query. 
 Include relevant information, facts, and explanations. Format your response clearly with sections if needed.
+{safe_mode_instruction}
 
 Search Query: {query}
 
@@ -55,6 +64,7 @@ Provide a helpful and informative response:"""
         return jsonify({
             'query': query,
             'result': response.text,
+            'safeMode': safe_mode,
             'service': 'fera-search'
         })
     

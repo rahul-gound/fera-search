@@ -8,11 +8,13 @@
 </head>
 <body>
     <div class="container" id="home-container">
+        <button class="settings-btn" id="settings-btn">
+            <img src="images/settings.svg" alt="Settings" class="settings-icon">
+        </button>
+        
         <header class="home-header">
             <div class="logo">
-                <div class="logo-icon">
-                    <span class="logo-f">f</span>
-                </div>
+                <img src="images/logo.svg" alt="fera-search logo" class="logo-img">
                 <h1>fera-search</h1>
             </div>
             <p class="tagline">AI-Powered Search Engine</p>
@@ -21,10 +23,7 @@
         <main class="search-section">
             <div class="search-box">
                 <div class="search-input-wrapper">
-                    <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="11" cy="11" r="8"></circle>
-                        <path d="M21 21l-4.35-4.35"></path>
-                    </svg>
+                    <img src="images/search.svg" alt="Search" class="search-icon">
                     <input type="text" id="search-input" placeholder="Search anything..." autocomplete="off">
                     <button id="clear-btn" class="clear-btn hidden">✕</button>
                 </div>
@@ -33,6 +32,10 @@
             <div class="search-buttons">
                 <button id="search-btn" class="search-btn">fera Search</button>
                 <button id="lucky-btn" class="search-btn secondary">I'm Feeling Lucky</button>
+            </div>
+            <div class="safe-mode-indicator">
+                <span class="safe-mode-label">Safe Mode:</span>
+                <span id="safe-mode-status" class="safe-mode-status">On</span>
             </div>
         </main>
 
@@ -44,30 +47,51 @@
     <div class="results-container hidden" id="results-container">
         <header class="results-header">
             <div class="results-logo" id="back-home">
-                <div class="logo-icon small">
-                    <span class="logo-f">f</span>
-                </div>
+                <img src="images/logo.svg" alt="fera-search logo" class="logo-img small">
                 <span class="logo-text">fera-search</span>
             </div>
             <div class="results-search-box">
                 <div class="search-input-wrapper">
                     <input type="text" id="results-search-input" placeholder="Search anything...">
                     <button id="results-search-btn" class="icon-btn">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="11" cy="11" r="8"></circle>
-                            <path d="M21 21l-4.35-4.35"></path>
-                        </svg>
+                        <img src="images/search.svg" alt="Search" class="search-icon-btn">
                     </button>
                 </div>
             </div>
+            <button class="settings-btn results-settings" id="results-settings-btn">
+                <img src="images/settings.svg" alt="Settings" class="settings-icon">
+            </button>
         </header>
         
         <main class="results-main">
             <div class="results-info">
                 <p id="results-query"></p>
+                <span class="results-safe-mode">Safe Mode: <span id="results-safe-mode-status">On</span></span>
             </div>
             <div id="search-results" class="search-results"></div>
         </main>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="modal hidden">
+        <div class="modal-overlay" id="modal-overlay"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Settings</h2>
+                <button class="modal-close" id="modal-close">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="setting-group">
+                    <label class="setting-label">Safe Mode</label>
+                    <p class="setting-description">Filter explicit content from search results</p>
+                    <div class="safe-mode-options">
+                        <button class="safe-mode-option" data-mode="off">Off</button>
+                        <button class="safe-mode-option active" data-mode="on">On</button>
+                        <button class="safe-mode-option" data-mode="strict">Strict</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div id="loading" class="loading hidden">

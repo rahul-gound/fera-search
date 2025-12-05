@@ -2,6 +2,9 @@ const API_URL = window.location.hostname === 'localhost' || window.location.host
     ? 'http://localhost:5000/api'
     : '/api';
 
+// Safe Mode state
+let safeMode = 'on'; // 'off', 'on', 'strict'
+
 // DOM Elements
 const homeContainer = document.getElementById('home-container');
 const resultsContainer = document.getElementById('results-container');
@@ -16,6 +19,47 @@ const searchResults = document.getElementById('search-results');
 const resultsQuery = document.getElementById('results-query');
 const backHome = document.getElementById('back-home');
 const loading = document.getElementById('loading');
+
+// Settings Modal Elements
+const settingsBtn = document.getElementById('settings-btn');
+const resultsSettingsBtn = document.getElementById('results-settings-btn');
+const settingsModal = document.getElementById('settings-modal');
+const modalOverlay = document.getElementById('modal-overlay');
+const modalClose = document.getElementById('modal-close');
+const safeModeOptions = document.querySelectorAll('.safe-mode-option');
+const safeModeStatus = document.getElementById('safe-mode-status');
+const resultsSafeModeStatus = document.getElementById('results-safe-mode-status');
+
+// Load saved settings
+function loadSettings() {
+    const savedSafeMode = localStorage.getItem('safeMode');
+    if (savedSafeMode) {
+        safeMode = savedSafeMode;
+    }
+    updateSafeModeUI();
+}
+
+// Update Safe Mode UI
+function updateSafeModeUI() {
+    // Update status indicators
+    const statusText = safeMode.charAt(0).toUpperCase() + safeMode.slice(1);
+    safeModeStatus.textContent = statusText;
+    resultsSafeModeStatus.textContent = statusText;
+    
+    // Update modal buttons
+    safeModeOptions.forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.mode === safeMode);
+    });
+}
+
+// Show/hide settings modal
+function showSettings() {
+    settingsModal.classList.remove('hidden');
+}
+
+function hideSettings() {
+    settingsModal.classList.add('hidden');
+}
 
 // Show/hide loading
 function showLoading() {
@@ -98,7 +142,7 @@ async function performSearch(query) {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ query }),
+            body: JSON.stringify({ query, safeMode }),
         });
         
         const data = await response.json();
@@ -169,7 +213,21 @@ async function getSuggestions(query) {
     }
 }
 
-// Event Listeners
+// Event Listeners - Settings
+settingsBtn.addEventListener('click', showSettings);
+resultsSettingsBtn.addEventListener('click', showSettings);
+modalOverlay.addEventListener('click', hideSettings);
+modalClose.addEventListener('click', hideSettings);
+
+safeModeOptions.forEach(btn => {
+    btn.addEventListener('click', () => {
+        safeMode = btn.dataset.mode;
+        localStorage.setItem('safeMode', safeMode);
+        updateSafeModeUI();
+    });
+});
+
+// Event Listeners - Search
 searchInput.addEventListener('input', (e) => {
     const value = e.target.value;
     clearBtn.classList.toggle('hidden', !value);
@@ -234,5 +292,6 @@ resultsSearchBtn.addEventListener('click', () => {
 
 backHome.addEventListener('click', showHome);
 
-// Focus search input on load
+// Initialize
+loadSettings();
 searchInput.focus();
