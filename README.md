@@ -1,20 +1,21 @@
-# fera-summarizeAI
+# fera-search
 
-A Docker-based text summarization and search application powered by AI.
+A Google-like AI-powered search engine using Google Gemini API.
 
 ## Features
 
-- **Text Summarization**: Summarize long texts into concise paragraphs
-- **Search & Answer**: Ask questions about provided content and get AI-powered answers
+- **AI Search**: Get comprehensive answers to any search query
+- **Search Suggestions**: Real-time AI-powered search suggestions
+- **Google-like Interface**: Clean, familiar search experience
 - **Docker Deployment**: Easy localhost deployment with Docker Compose
-- **Modern UI**: Clean, responsive interface with dark theme
+- **Modern UI**: Beautiful dark theme with responsive design
 
 ## Quick Start
 
 ### Prerequisites
 
 - Docker and Docker Compose installed on your machine
-- Cohere API key (get one at https://cohere.com)
+- Google Gemini API key (get one at https://makersuite.google.com/app/apikey)
 
 ### Setup
 
@@ -24,10 +25,10 @@ A Docker-based text summarization and search application powered by AI.
    cd fera-search
    ```
 
-2. Create a `.env` file with your Cohere API key:
+2. Create a `.env` file with your Gemini API key:
    ```bash
    cp .env.example .env
-   # Edit .env and add your COHERE_API_KEY
+   # Edit .env and add your GEMINI_API_KEY
    ```
 
 3. Start the application:
@@ -46,24 +47,23 @@ A Docker-based text summarization and search application powered by AI.
 GET /api/health
 ```
 
-### Summarize Text
-```
-POST /api/summarize
-Content-Type: application/json
-
-{
-  "text": "Your long text here (minimum 250 characters)"
-}
-```
-
-### Search & Answer
+### Search
 ```
 POST /api/search
 Content-Type: application/json
 
 {
-  "content": "Your content here",
-  "query": "Your question about the content"
+  "query": "Your search query"
+}
+```
+
+### Get Suggestions
+```
+POST /api/suggest
+Content-Type: application/json
+
+{
+  "query": "Partial search query"
 }
 ```
 
@@ -88,10 +88,10 @@ fera-search/
 
 ## Technology Stack
 
-- **Backend**: Python, Flask, Cohere API
+- **Backend**: Python, Flask, Google Gemini API
 - **Frontend**: HTML5, CSS3, Vanilla JavaScript
 - **Deployment**: Docker, Nginx
-- **AI**: Cohere API for summarization and text generation
+- **AI**: Google Gemini Pro for search and suggestions
 
 ## License
 

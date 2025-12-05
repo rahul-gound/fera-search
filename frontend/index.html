@@ -3,56 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>fera-summarizeAI</title>
+    <title>fera-search</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <header>
+    <div class="container" id="home-container">
+        <header class="home-header">
             <div class="logo">
-                <h1>fera-summarizeAI</h1>
-                <p class="tagline">Intelligent Text Summarization & Search</p>
+                <div class="logo-icon">
+                    <span class="logo-f">f</span>
+                </div>
+                <h1>fera-search</h1>
             </div>
+            <p class="tagline">AI-Powered Search Engine</p>
         </header>
 
-        <main>
-            <div class="tabs">
-                <button class="tab-btn active" data-tab="summarize">Summarize</button>
-                <button class="tab-btn" data-tab="search">Search & Answer</button>
-            </div>
-
-            <div id="summarize" class="tab-content active">
-                <h2>Text Summarization</h2>
-                <p class="description">Paste your text below to get an AI-powered summary</p>
-                <textarea id="summarize-input" placeholder="Enter your text here (minimum 250 characters)..." rows="10"></textarea>
-                <button id="summarize-btn" class="primary-btn">Summarize</button>
-                <div id="summarize-result" class="result-box hidden">
-                    <h3>Summary</h3>
-                    <p id="summary-text"></p>
+        <main class="search-section">
+            <div class="search-box">
+                <div class="search-input-wrapper">
+                    <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="M21 21l-4.35-4.35"></path>
+                    </svg>
+                    <input type="text" id="search-input" placeholder="Search anything..." autocomplete="off">
+                    <button id="clear-btn" class="clear-btn hidden">✕</button>
                 </div>
+                <div id="suggestions" class="suggestions hidden"></div>
             </div>
-
-            <div id="search" class="tab-content">
-                <h2>Search & Answer</h2>
-                <p class="description">Provide content and ask a question about it</p>
-                <textarea id="content-input" placeholder="Enter your content here..." rows="8"></textarea>
-                <input type="text" id="query-input" placeholder="Ask a question about the content...">
-                <button id="search-btn" class="primary-btn">Get Answer</button>
-                <div id="search-result" class="result-box hidden">
-                    <h3>Answer</h3>
-                    <p id="answer-text"></p>
-                </div>
+            <div class="search-buttons">
+                <button id="search-btn" class="search-btn">fera Search</button>
+                <button id="lucky-btn" class="search-btn secondary">I'm Feeling Lucky</button>
             </div>
         </main>
 
-        <footer>
-            <p>Powered by <strong>fera-summarizeAI</strong></p>
+        <footer class="home-footer">
+            <p>Powered by <strong>fera-search</strong> AI</p>
         </footer>
+    </div>
+
+    <div class="results-container hidden" id="results-container">
+        <header class="results-header">
+            <div class="results-logo" id="back-home">
+                <div class="logo-icon small">
+                    <span class="logo-f">f</span>
+                </div>
+                <span class="logo-text">fera-search</span>
+            </div>
+            <div class="results-search-box">
+                <div class="search-input-wrapper">
+                    <input type="text" id="results-search-input" placeholder="Search anything...">
+                    <button id="results-search-btn" class="icon-btn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <path d="M21 21l-4.35-4.35"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </header>
+        
+        <main class="results-main">
+            <div class="results-info">
+                <p id="results-query"></p>
+            </div>
+            <div id="search-results" class="search-results"></div>
+        </main>
     </div>
 
     <div id="loading" class="loading hidden">
         <div class="spinner"></div>
-        <p>Processing...</p>
+        <p>Searching...</p>
     </div>
 
     <script src="script.js"></script>
