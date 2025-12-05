@@ -44,18 +44,16 @@ def summarize():
         if len(text) < 250:
             return jsonify({'error': 'Text must be at least 250 characters for summarization'}), 400
         
-        # Use Cohere summarize endpoint
-        response = client.summarize(
-            text=text,
-            length='medium',
-            format='paragraph',
-            model='summarize-xlarge',
-            extractiveness='medium',
+        # Use Cohere to generate a summary
+        response = client.generate(
+            model='command',
+            prompt=f"Please provide a concise summary of the following text:\n\n{text}\n\nSummary:",
+            max_tokens=300,
             temperature=0.3
         )
         
         return jsonify({
-            'summary': response.summary,
+            'summary': response.generations[0].text.strip(),
             'service': 'fera-summarizeAI'
         })
     
@@ -97,4 +95,4 @@ def search_and_summarize():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=5000)
