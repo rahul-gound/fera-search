@@ -246,25 +246,18 @@ body {
     padding: 15px 20px;
     background: #fff;
     border-bottom: 1px solid #eee;
-    gap: 30px;
+    gap: 20px;
 }
 
 .results-logo {
     display: flex;
     align-items: center;
-    gap: 10px;
     cursor: pointer;
     transition: opacity 0.3s ease;
 }
 
 .results-logo:hover {
     opacity: 0.8;
-}
-
-.logo-text {
-    font-size: 1.3rem;
-    font-weight: bold;
-    color: #FF6B35;
 }
 
 .results-search-box {

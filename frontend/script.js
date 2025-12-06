@@ -11,8 +11,6 @@ const resultsContainer = document.getElementById('results-container');
 const searchInput = document.getElementById('search-input');
 const resultsSearchInput = document.getElementById('results-search-input');
 const searchBtn = document.getElementById('search-btn');
-const luckyBtn = document.getElementById('lucky-btn');
-const resultsSearchBtn = document.getElementById('results-search-btn');
 const clearBtn = document.getElementById('clear-btn');
 const suggestionsBox = document.getElementById('suggestions');
 const searchResults = document.getElementById('search-results');
@@ -267,27 +265,10 @@ searchBtn.addEventListener('click', () => {
     performSearch(searchInput.value);
 });
 
-luckyBtn.addEventListener('click', () => {
-    const luckyQueries = [
-        'What is the meaning of life?',
-        'How does the internet work?',
-        'What are black holes?',
-        'How to be happy?',
-        'What is artificial intelligence?'
-    ];
-    const randomQuery = luckyQueries[Math.floor(Math.random() * luckyQueries.length)];
-    searchInput.value = randomQuery;
-    performSearch(randomQuery);
-});
-
 resultsSearchInput.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') {
         performSearch(resultsSearchInput.value);
     }
-});
-
-resultsSearchBtn.addEventListener('click', () => {
-    performSearch(resultsSearchInput.value);
 });
 
 backHome.addEventListener('click', showHome);
