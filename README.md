@@ -18,7 +18,7 @@ This project is a customized fork of SearXNG, a free internet metasearch engine 
 - Self-hostable with Docker
 - Highly configurable
 - Professional orange theme
-- AI-powered summarization using Hugging Face
+- Fera-SummarizeAI: AI-powered summarization using Cohere
 
 ## Quick Start with Docker (Recommended)
 
@@ -84,14 +84,14 @@ The included `Caddyfile` automatically obtains SSL certificates from Let's Encry
    python -m searx.webapp
    ```
 
-## AI Summarization
+## Fera-SummarizeAI
 
-To use the AI summarization feature, prefix your query with `summarize:`:
+Fera-SummarizeAI provides AI-powered text summarization using Cohere API. To use the summarization feature, prefix your query with `summarize:`:
 ```
 summarize: The tower is 324 metres (1,063 ft) tall, about the same height as an 81-storey building...
 ```
 
-The Hugging Face token is already configured in the code.
+The Cohere API key is already configured in the code.
 
 ## Configuration
 
@@ -122,4 +122,4 @@ This project is licensed under the GNU Affero General Public License (AGPL-3.0).
 ## Acknowledgments
 
 - SearXNG - The original project this fork is based on
-- Hugging Face - AI model hosting and inference
+- Cohere - AI-powered summarization for Fera-SummarizeAI
