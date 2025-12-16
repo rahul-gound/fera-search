@@ -110,6 +110,11 @@ The Cohere API key is already configured in the code.
 
 Configuration files are located in the `searx/settings.yml` file. See the SearXNG Configuration Guide for detailed configuration options.
 
+**Note:** The `settings.yml` file is baked into the Docker image during build. To customize settings:
+1. Edit `searx/settings.yml` in the repository
+2. Rebuild the Docker image: `docker-compose build`
+3. Restart the container: `docker-compose up -d`
+
 ### Environment Variables
 
 | Variable | Description |
