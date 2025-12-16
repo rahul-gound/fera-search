@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  fera-search:
+    build: .
+    image: fera-search:latest
+    container_name: fera-search
+    restart: "no"
+    ports:
+      - "8080:8080"
+    environment:
+      - SEARXNG_SECRET=change-this-to-a-random-secret-key
+      - SEARXNG_BASE_URL=https://fera-search.tech
+    volumes:
+      - ./searx/settings.yml:/app/searx/settings.yml:ro
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8080/')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  # Optional: Caddy reverse proxy for automatic HTTPS
+  caddy:
+    image: caddy:2-alpine
+    container_name: fera-caddy
+    restart: "no"
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - fera-search
+
+volumes:
+  caddy_data:
+  caddy_config:
