@@ -47,17 +47,26 @@ docker build -t fera-search:latest .
 docker run -d -p 8080:8080 --name fera-search fera-search:latest
 ```
 
-### Deploy with SSL (HTTPS)
+### Deploy with SSL (HTTPS) using Cloudflare Tunnel
 
-For production deployment with automatic SSL on `fera-search.tech`:
+For production deployment with automatic SSL using Cloudflare Tunnel:
 
-1. Point your domain DNS to your server IP
-2. Run with Caddy reverse proxy:
+1. Install Cloudflare Tunnel (cloudflared) on your server
+2. Authenticate and create a tunnel:
    ```bash
-   docker-compose up -d
+   cloudflared tunnel login
+   cloudflared tunnel create fera-search
+   ```
+3. Configure the tunnel to point to your local service:
+   ```bash
+   cloudflared tunnel route dns fera-search fera-search.tech
+   ```
+4. Run cloudflared alongside your Docker container:
+   ```bash
+   cloudflared tunnel --config /path/to/config.yml run fera-search
    ```
 
-The included `Caddyfile` automatically obtains SSL certificates from Let's Encrypt.
+Cloudflare Tunnel provides automatic SSL/TLS, DDoS protection, and eliminates the need for a reverse proxy like Caddy or Nginx.
 
 ## Local Development
 

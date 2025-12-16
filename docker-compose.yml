@@ -19,22 +19,3 @@ services:
       timeout: 10s
       retries: 3
       start_period: 10s
-
-  # Optional: Caddy reverse proxy for automatic HTTPS
-  caddy:
-    image: caddy:2-alpine
-    container_name: fera-caddy
-    restart: unless-stopped
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - ./Caddyfile:/etc/caddy/Caddyfile:ro
-      - caddy_data:/data
-      - caddy_config:/config
-    depends_on:
-      - fera-search
-
-volumes:
-  caddy_data:
-  caddy_config:
