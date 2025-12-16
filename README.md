@@ -12,6 +12,8 @@ A Google-like AI-powered search engine using Google Gemini API.
 
 ## Quick Start
 
+See [QUICKSTART.md](QUICKSTART.md) for a step-by-step guide to get running in 3 minutes!
+
 ### Prerequisites
 
 - Docker and Docker Compose installed on your machine
