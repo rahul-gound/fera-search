@@ -35,6 +35,8 @@ This project is a customized fork of SearXNG, a free internet metasearch engine 
    docker-compose up -d
    ```
 
+   > Note: Containers will not auto-restart; if you want them to come back after a host reboot, set `restart: unless-stopped` in `docker-compose.yml`.
+
 3. **Access Fera Search at:** `http://your-server-ip:8080`
 
 ### Build Docker Image Manually
