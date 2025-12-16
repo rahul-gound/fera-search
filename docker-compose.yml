@@ -9,8 +9,6 @@ services:
     environment:
       - SEARXNG_SECRET=change-this-to-a-random-secret-key
       - SEARXNG_BASE_URL=https://fera-search.tech
-    volumes:
-      - ./searx/settings.yml:/app/searx/settings.yml:ro
     healthcheck:
       test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8080/')"]
       interval: 30s
