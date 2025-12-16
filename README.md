@@ -51,6 +51,8 @@ docker run -d -p 8080:8080 --name fera-search fera-search:latest
 
 For production deployment with automatic SSL using Cloudflare Tunnel:
 
+**Quick Setup:**
+
 1. Install Cloudflare Tunnel (cloudflared) on your server
 2. Authenticate and create a tunnel:
    ```bash
@@ -63,8 +65,10 @@ For production deployment with automatic SSL using Cloudflare Tunnel:
    ```
 4. Run cloudflared alongside your Docker container:
    ```bash
-   cloudflared tunnel --config /path/to/config.yml run fera-search
+   cloudflared tunnel run fera-search
    ```
+
+**For detailed setup instructions, see [CLOUDFLARE_TUNNEL_SETUP.md](CLOUDFLARE_TUNNEL_SETUP.md)**
 
 Cloudflare Tunnel provides automatic SSL/TLS, DDoS protection, and eliminates the need for a reverse proxy like Caddy or Nginx.
 
