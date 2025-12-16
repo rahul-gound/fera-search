@@ -12,5 +12,5 @@ RUN pip install --no-cache-dir -r /app/requirements.txt
 # Expose port
 EXPOSE 8080
 
-# Run with granian
-CMD ["python", "-m", "searx.webapp"]
+# Use the default SearXNG entrypoint
+# The base image already has the proper CMD configured
