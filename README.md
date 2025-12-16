@@ -30,6 +30,8 @@ A Google-like AI-powered search engine using Google Gemini API.
    cp .env.example .env
    # Edit .env and add your GEMINI_API_KEY
    ```
+   
+   **Note**: If you don't configure the API key, the containers will still start but search functionality won't work. The application will return an error when you try to search.
 
 3. Start the application:
    ```bash
@@ -39,6 +41,10 @@ A Google-like AI-powered search engine using Google Gemini API.
 4. Open your browser and navigate to:
    - Frontend: http://localhost
    - Backend API: http://localhost:5000
+
+## Troubleshooting
+
+If you experience any issues with Docker containers (e.g., containers restarting repeatedly), please see [TROUBLESHOOTING.md](TROUBLESHOOTING.md) for detailed debugging steps.
 
 ## API Endpoints
 
